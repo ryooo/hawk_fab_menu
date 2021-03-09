@@ -75,6 +75,12 @@ class _HawkFabMenuState extends State<HawkFabMenu>
   }
 
   @override
+  void dispose() {
+    _iconAnimationCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Stack(
