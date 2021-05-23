@@ -26,8 +26,7 @@ class HawkFabMenu extends StatefulWidget {
   _HawkFabMenuState createState() => _HawkFabMenuState();
 }
 
-class _HawkFabMenuState extends State<HawkFabMenu>
-    with TickerProviderStateMixin {
+class _HawkFabMenuState extends State<HawkFabMenu> with TickerProviderStateMixin {
   /// To check if the menu is open
   bool _isOpen = false;
 
@@ -168,6 +167,7 @@ class _HawkFabMenuState extends State<HawkFabMenu>
         ),
         backgroundColor: this.widget.fabColor ?? Theme.of(context).primaryColor,
         onPressed: _toggleMenu,
+        heroTag: this.widget.icon.toString(),
       ),
     );
   }
@@ -194,6 +194,9 @@ class _MenuItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (this.item.customWidget != null) {
+      return this.item.customWidget;
+    }
     return InkWell(
       onTap: this.onTap,
       child: Row(
@@ -247,12 +250,15 @@ class HawkFabMenuItem {
   /// Background color for label
   Color labelBackgroundColor;
 
+  Widget customWidget;
+
   HawkFabMenuItem({
-    @required this.label,
-    @required this.ontap,
-    @required this.icon,
+    this.label,
+    this.ontap,
+    this.icon,
     this.color,
     this.labelBackgroundColor,
     this.labelColor,
+    this.customWidget,
   });
 }
