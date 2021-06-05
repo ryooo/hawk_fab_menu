@@ -12,15 +12,15 @@ class HawkFabMenu extends StatefulWidget {
   final Color fabColor;
   final Color iconColor;
   HawkFabMenu({
+    Key key,
     @required this.body,
     @required this.items,
     this.blur: 5.0,
     this.icon,
     this.fabColor,
     this.iconColor,
-  }) {
-    assert(this.items.length > 0);
-  }
+  })  : assert(items.length > 0),
+        super(key: key);
 
   @override
   _HawkFabMenuState createState() => _HawkFabMenuState();
@@ -53,7 +53,7 @@ class _HawkFabMenuState extends State<HawkFabMenu> with TickerProviderStateMixin
   }
 
   /// Closes the menu if open and vice versa
-  void _toggleMenu() {
+  void toggleMenu() {
     setState(() {
       _isOpen = !_isOpen;
     });
@@ -67,7 +67,7 @@ class _HawkFabMenuState extends State<HawkFabMenu> with TickerProviderStateMixin
   /// If the menu is open and the device's back button is pressed then menu gets closed instead of going back.
   Future<bool> _preventPopIfOpen() async {
     if (_isOpen) {
-      _toggleMenu();
+      toggleMenu();
       return false;
     }
     return true;
@@ -126,7 +126,7 @@ class _HawkFabMenuState extends State<HawkFabMenu> with TickerProviderStateMixin
                   .map<Widget>(
                     (item) => _MenuItemWidget(
                       item: item,
-                      toggleMenu: _toggleMenu,
+                      toggleMenu: toggleMenu,
                     ),
                   )
                   .toList(),
@@ -140,7 +140,7 @@ class _HawkFabMenuState extends State<HawkFabMenu> with TickerProviderStateMixin
   /// Builds the blur effect when the menu is opened
   Widget _buildBlurWidget() {
     return InkWell(
-      onTap: _toggleMenu,
+      onTap: toggleMenu,
       child: BackdropFilter(
         filter: ui.ImageFilter.blur(
           sigmaX: this.widget.blur,
@@ -166,7 +166,7 @@ class _HawkFabMenuState extends State<HawkFabMenu> with TickerProviderStateMixin
           color: this.widget.iconColor,
         ),
         backgroundColor: this.widget.fabColor ?? Theme.of(context).primaryColor,
-        onPressed: _toggleMenu,
+        onPressed: toggleMenu,
         heroTag: this.widget.icon.toString(),
       ),
     );
